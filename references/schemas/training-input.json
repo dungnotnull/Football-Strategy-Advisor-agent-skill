@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Training Design Input Schema",
+  "description": "Input schema for training session and periodization design",
+  "type": "object",
+  "required": ["session_type"],
+  "properties": {
+    "session_type": {
+      "type": "string",
+      "enum": ["tactical", "technical", "conditioning", "recovery", "match-prep", "set-piece"],
+      "description": "Type of training session"
+    },
+    "duration": {
+      "type": "integer",
+      "minimum": 30,
+      "maximum": 120,
+      "description": "Session duration in minutes (default: 90)"
+    },
+    "intensity": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Target session intensity"
+    },
+    "focus_topic": {
+      "type": "string",
+      "description": "Specific tactical topic to focus on",
+      "examples": [
+        "defensive-shape",
+        "pressing-triggers",
+        "build-up-play",
+        "counter-attacks",
+        "set-piece-attack",
+        "set-piece-defense",
+        "possession-retention"
+      ]
+    },
+    "formation": {
+      "type": "string",
+      "enum": ["4-3-3", "4-2-3-1", "4-4-2", "3-5-2", "5-3-2", "3-4-3", "4-1-4-1"],
+      "description": "Formation to use in session"
+    },
+    "player_availability": {
+      "type": "object",
+      "description": "Available players for session",
+      "properties": {
+        "total_players": {
+          "type": "integer",
+          "minimum": 11,
+          "maximum": 30,
+          "description": "Number of available players"
+        },
+        "goalkeepers": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3,
+          "description": "Number of available goalkeepers"
+        },
+        "unavailable_players": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Names of unavailable players"
+        },
+        "limited_participation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "reason": {"type": "string"},
+              "restriction": {"type": "string"}
+            }
+          },
+          "description": "Players with limited participation"
+        }
+      }
+    },
+    "periodization_request": {
+      "type": "object",
+      "description": "Periodization planning request",
+      "properties": {
+        "phase": {
+          "type": "string",
+          "enum": ["pre-season", "in-season", "recovery"],
+          "description": "Current training phase"
+        },
+        "weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12,
+          "description": "Number of weeks to plan"
+        },
+        "matches_per_week": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Number of matches per week"
+        },
+        "focus_area": {
+          "type": "string",
+          "enum": ["fitness", "tactical", "technical", "balanced"],
+          "description": "Primary training focus"
+        },
+        "key_dates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {"type": "string", "format": "date"},
+              "importance": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+              "opponent": {"type": "string"}
+            }
+          },
+          "description": "Important matches in the period"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "description": "Session constraints",
+      "properties": {
+        "equipment_available": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["balls", "cones", "bibs", "goals", "poles", "hurdles", "ladders", "mannequins"]
+          },
+          "description": "Available training equipment"
+        },
+        "field_availability": {
+          "type": "string",
+          "enum": ["full-pitch", "half-pitch", "quarter-pitch", "unknown"],
+          "description": "Available field space"
+        },
+        "time_of_day": {
+          "type": "string",
+          "enum": ["morning", "afternoon", "evening"],
+          "description": "When session will be held"
+        },
+        "recovery_needed": {
+          "type": "boolean",
+          "description": "Whether session should be recovery-focused"
+        }
+      }
+    },
+    "next_match": {
+      "type": "object",
+      "description": "Information about next match",
+      "properties": {
+        "days_until_match": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7,
+          "description": "Days until next match"
+        },
+        "opponent": {
+          "type": "string",
+          "description": "Next opponent"
+        },
+        "opponent_style": {
+          "type": "string",
+          "enum": ["possession", "counter-attack", "direct", "balanced", "unknown"],
+          "description": "Opponent's playing style"
+        },
+        "match_importance": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Importance of upcoming match"
+        }
+      }
+    }
+  }
+}

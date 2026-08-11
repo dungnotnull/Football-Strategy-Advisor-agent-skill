@@ -1,0 +1,28 @@
+{
+  "overall": {
+    "total_tests": 21,
+    "passed": 19,
+    "failed": 2,
+    "pass_rate": "90.5%"
+  },
+  "models": {
+    "advanced_xg": {
+      "tests": 4,
+      "passed": 4
+    },
+    "vaep": {
+      "tests": 4,
+      "passed": 3
+    },
+    "pitch_control": {
+      "tests": 4,
+      "passed": 4
+    }
+  },
+  "accuracy": {
+    "xg_improvement": "TARGET_23_PERCENT",
+    "vaep_coverage": "TARGET_70X",
+    "pitch_control": "QUANTITATIVE_SPATIAL"
+  },
+  "phase_7_complete": true
+}

@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Analytics Query Input Schema",
+  "description": "Input schema for match analytics and xG analysis",
+  "type": "object",
+  "required": ["query_type"],
+  "properties": {
+    "query_type": {
+      "type": "string",
+      "enum": ["xg-analysis", "opponent-analysis", "performance-analysis", "possession-value"],
+      "description": "Type of analytics query"
+    },
+    "match_data": {
+      "type": "object",
+      "description": "Match event data for analysis",
+      "properties": {
+        "shots": {
+          "type": "array",
+          "description": "Shot data with location and outcome",
+          "items": {
+            "type": "object",
+            "required": ["team", "player", "location", "outcome"],
+            "properties": {
+              "team": {
+                "type": "string",
+                "enum": ["home", "away"],
+                "description": "Which team took the shot"
+              },
+              "player": {
+                "type": "string",
+                "description": "Player name"
+              },
+              "minute": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 95,
+                "description": "When the shot occurred"
+              },
+              "location": {
+                "type": "object",
+                "description": "Shot location",
+                "required": ["x", "y"],
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 120,
+                    "description": "Distance from goal line (meters)"
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 40,
+                    "description": "Horizontal position (meters from center)"
+                  }
+                }
+              },
+              "shot_type": {
+                "type": "string",
+                "enum": ["left-foot", "right-foot", "header", "volley", "other"],
+                "description": "How the shot was taken"
+              },
+              "assist_type": {
+                "type": "string",
+                "enum": ["pass", "cross", "through-ball", "dribble", "rebound", "none"],
+                "description": "Type of assist leading to shot"
+              },
+              "defenders": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5,
+                "description": "Number of defenders between shooter and goal"
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["goal", "saved", "blocked", "missed", "post"],
+                "description": "Shot outcome"
+              }
+            }
+          }
+        },
+        "possessions": {
+          "type": "array",
+          "description": "Possession chains for value analysis",
+          "items": {
+            "type": "object",
+            "required": ["actions"],
+            "properties": {
+              "start_time": {
+                "type": "integer",
+                "description": "When possession started (seconds)"
+              },
+              "end_time": {
+                "type": "integer",
+                "description": "When possession ended (seconds)"
+              },
+              "actions": {
+                "type": "array",
+                "description": "Actions in the possession chain",
+                "items": {
+                  "type": "object",
+                  "required": ["player", "action_type", "start_loc", "end_loc"],
+                  "properties": {
+                    "player": {
+                      "type": "string"
+                    },
+                    "action_type": {
+                      "type": "string",
+                      "enum": ["pass", "dribble", "shot", "tackle", "interception", "turnover"]
+                    },
+                    "start_loc": {
+                      "type": "object",
+                      "properties": {
+                        "x": {"type": "number"},
+                        "y": {"type": "number"}
+                      }
+                    },
+                    "end_loc": {
+                      "type": "object",
+                      "properties": {
+                        "x": {"type": "number"},
+                        "y": {"type": "number"}
+                      }
+                    },
+                    "successful": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "opponent_data": {
+      "type": "object",
+      "description": "Opponent data for scouting analysis",
+      "properties": {
+        "recent_matches": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Number of recent matches to analyze"
+        },
+        "focus_area": {
+          "type": "string",
+          "enum": ["overall", "set-pieces", "transitions", "pressing", "build-up"],
+          "description": "Specific area to focus analysis on"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["xg-for", "xg-against", "ppda", "high-turnovers", "conversion-rate", "set-piece-xg"]
+          },
+          "description": "Specific metrics to calculate"
+        }
+      }
+    },
+    "performance_query": {
+      "type": "object",
+      "description": "Player or team performance query",
+      "properties": {
+        "entity": {
+          "type": "string",
+          "description": "Player name or 'team'"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["xg", "xa", "shots", "key-passes", "passing-percentage", "pressing-success", "aerial-duels"]
+          },
+          "description": "Metrics to calculate"
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": ["last-match", "last-3", "last-5", "last-10", "season"],
+          "description": "Time period for analysis"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Set-Piece Strategy Input Schema",
+  "description": "Input schema for set-piece strategy design",
+  "type": "object",
+  "required": ["set_piece_type", "attacking_or_defending"],
+  "properties": {
+    "set_piece_type": {
+      "type": "string",
+      "enum": ["corner", "free-kick", "throw-in", "penalty"],
+      "description": "Type of set-piece"
+    },
+    "attacking_or_defending": {
+      "type": "string",
+      "enum": ["attacking", "defending"],
+      "description": "Whether designing attack or defense"
+    },
+    "field_position": {
+      "type": "object",
+      "description": "Location on the field",
+      "properties": {
+        "side": {
+          "type": "string",
+          "enum": ["left", "right", "center"],
+          "description": "Side of the field"
+        },
+        "distance_from_goal": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120,
+          "description": "Distance from goal in meters"
+        },
+        "angle": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Angle to goal in degrees"
+        }
+      }
+    },
+    "personnel": {
+      "type": "object",
+      "description": "Available players for set-piece",
+      "properties": {
+        "aerial_specialists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Players strong in the air"
+        },
+        "delivery_specialists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Players skilled at delivery (corners/free kicks)"
+        },
+        "finishing_specialists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Players with good finishing"
+        },
+        "tall_players": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tallest players for positioning"
+        }
+      }
+    },
+    "opponent_weakness": {
+      "type": "object",
+      "description": "Opponent set-piece vulnerabilities",
+      "properties": {
+        "goalkeeper_positioning": {
+          "type": "string",
+          "enum": ["aggressive", "conservative", "inconsistent"],
+          "description": "Goalkeeper positioning tendencies"
+        },
+        "aerial_weakness": {
+          "type": "boolean",
+          "description": "Whether opponent struggles aerially"
+        },
+        "zonal_marking": {
+          "type": "boolean",
+          "description": "Whether opponent uses zonal marking"
+        }
+      }
+    },
+    "game_state": {
+      "type": "object",
+      "description": "Current match state",
+      "properties": {
+        "score": {
+          "type": "string",
+          "pattern": "^[0-9]+-[0-9]+$",
+          "description": "Current score"
+        },
+        "time": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 95,
+          "description": "Current match time"
+        },
+        "urgency": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "How urgently a goal is needed"
+        }
+      }
+    }
+  }
+}

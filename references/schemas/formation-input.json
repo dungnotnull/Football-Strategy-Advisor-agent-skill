@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Formation Analysis Input Schema",
+  "description": "Input schema for formation analysis and recommendations",
+  "type": "object",
+  "required": ["squad_profile", "opponent_style"],
+  "properties": {
+    "squad_profile": {
+      "type": "object",
+      "description": "Current squad personnel and capabilities",
+      "required": ["players", "system_preference"],
+      "properties": {
+        "players": {
+          "type": "array",
+          "description": "List of available players with positions and attributes",
+          "items": {
+            "type": "object",
+            "required": ["name", "position", "rating"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Player name"
+              },
+              "position": {
+                "type": "string",
+                "enum": ["GK", "RB", "RCB", "CB", "LCB", "LB", "RWB", "LWB", "CDM", "RDM", "LDM", "CM", "RCM", "LCM", "RM", "LM", "CAM", "RAM", "LAM", "RW", "LW", "RF", "LF", "ST", "CF"],
+                "description": "Primary position"
+              },
+              "secondary_position": {
+                "type": "string",
+                "description": "Secondary position if applicable"
+              },
+              "rating": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Overall player rating (0-100)"
+              },
+              "attributes": {
+                "type": "object",
+                "description": "Key player attributes",
+                "properties": {
+                  "pace": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "passing": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "dribbling": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "defending": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "physical": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "aerial": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
+                }
+              },
+              "fitness": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Current fitness level (0-100)"
+              }
+            }
+          }
+        },
+        "system_preference": {
+          "type": "string",
+          "enum": ["4-3-3", "4-2-3-1", "4-4-2", "3-5-2", "5-3-2", "3-4-3", "4-1-4-1", "4-3-2-1", "flexible"],
+          "description": "Preferred tactical system"
+        },
+        "playing_style": {
+          "type": "string",
+          "enum": ["possession", "counter-attack", "direct", "balanced"],
+          "description": "Preferred playing style"
+        },
+        "pressing_intensity": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Desired pressing intensity"
+        }
+      }
+    },
+    "opponent_style": {
+      "type": "object",
+      "description": "Opponent tactical tendencies",
+      "required": ["formation", "playing_style"],
+      "properties": {
+        "formation": {
+          "type": "string",
+          "description": "Opponent's primary formation"
+        },
+        "playing_style": {
+          "type": "string",
+          "enum": ["possession", "counter-attack", "direct", "balanced"],
+          "description": "Opponent's playing style"
+        },
+        "pressing_intensity": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Opponent's pressing intensity"
+        },
+        "defensive_block": {
+          "type": "string",
+          "enum": ["high", "mid", "low"],
+          "description": "Opponent's defensive block height"
+        },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["set-pieces", "counter-attack", "possession", "aerial", "wide-play", "central-play"]
+          },
+          "description": "Opponent's tactical strengths"
+        },
+        "weaknesses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["set-pieces", "counter-attack", "possession", "aerial", "wide-play", "central-play", "transition"]
+          },
+          "description": "Opponent's tactical weaknesses"
+        }
+      }
+    },
+    "match_context": {
+      "type": "object",
+      "description": "Context of the upcoming match",
+      "properties": {
+        "venue": {
+          "type": "string",
+          "enum": ["home", "away", "neutral"],
+          "description": "Match venue"
+        },
+        "importance": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Match importance"
+        },
+        "game_state_target": {
+          "type": "string",
+          "enum": ["win", "draw", "avoid-defeat"],
+          "description": "Target result"
+        },
+        "fatigue_level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Current squad fatigue level"
+        }
+      }
+    }
+  }
+}

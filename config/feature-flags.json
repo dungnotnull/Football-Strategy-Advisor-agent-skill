@@ -1,0 +1,34 @@
+{
+  "feature_flags": {
+    "enable_formation_optimizer": true,
+    "enable_xg_calculator": true,
+    "enable_opponent_analyzer": true,
+    "enable_set_piece_optimizer": true,
+    "enable_training_periodization": true,
+    "enable_possession_value_analysis": true,
+    "enable_counter_press_analysis": true,
+    "enable_defensive_block_analysis": true,
+    "experimental_features": {
+      "enable_ml_predictions": false,
+      "enable_real_time_analysis": false,
+      "enable_video_integration": false
+    }
+  },
+  "routing": {
+    "auto_route_to_sub_agents": true,
+    "parallel_execution": false,
+    "max_parallel_tasks": 3
+  },
+  "output": {
+    "include_confidence_scores": true,
+    "include_alternative_options": true,
+    "include_methodology_explanation": true,
+    "max_alternatives": 3
+  },
+  "constraints": {
+    "max_players_per_squad": 30,
+    "max_formations_returned": 5,
+    "max_training_weeks_planned": 12,
+    "max_matches_analyzed": 10
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "skill_name": "football-strategy-advisor",
+  "description": "Tactical analysis and strategy support for football (soccer)",
+  "llm_parameters": {
+    "default_model": "claude-3-5-sonnet-20241022",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "top_p": 0.95,
+    "top_k": 40
+  },
+  "sub_agents": {
+    "formation-analyzer": {
+      "description": "Formation and system design analysis",
+      "model": "claude-3-5-sonnet-20241022",
+      "temperature": 0.6,
+      "max_tokens": 3072
+    },
+    "pressing-specialist": {
+      "description": "Pressing and defensive block strategies",
+      "model": "claude-3-5-sonnet-20241022",
+      "temperature": 0.7,
+      "max_tokens": 3072
+    },
+    "set-piece-coordinator": {
+      "description": "Set-piece strategy and routines",
+      "model": "claude-3-5-sonnet-20241022",
+      "temperature": 0.6,
+      "max_tokens": 3072
+    },
+    "analytics-engine": {
+      "description": "Match analytics and xG calculations",
+      "model": "claude-3-5-sonnet-20241022",
+      "temperature": 0.5,
+      "max_tokens": 4096
+    },
+    "training-architect": {
+      "description": "Training session and periodization design",
+      "model": "claude-3-5-sonnet-20241022",
+      "temperature": 0.6,
+      "max_tokens": 3072
+    }
+  },
+  "validation": {
+    "strict_mode": true,
+    "schema_validation": true,
+    "output_validation": true,
+    "error_handling": "graceful"
+  },
+  "performance": {
+    "context_window_optimization": true,
+    "token_tracking": true,
+    "lazy_loading": true,
+    "caching": {
+      "enabled": true,
+      "ttl_seconds": 3600
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "structured",
+    "include_timing": true,
+    "include_token_usage": true
+  }
+}

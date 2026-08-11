@@ -1,0 +1,314 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Football Strategy Advisor Tool Definitions",
+  "description": "Tool definitions for the Football Strategy Advisor skill",
+  "type": "object",
+  "tools": [
+    {
+      "name": "analyze_formation",
+      "description": "Analyze squad profile and recommend optimal formation with player positioning",
+      "input_schema": {
+        "type": "object",
+        "required": ["players", "playing_style"],
+        "properties": {
+          "players": {
+            "type": "array",
+            "description": "List of available players",
+            "items": {
+              "type": "object",
+              "required": ["name", "position", "rating"],
+              "properties": {
+                "name": {"type": "string"},
+                "position": {
+                  "type": "string",
+                  "enum": ["GK", "RB", "RCB", "CB", "LCB", "LB", "RWB", "LWB", "CDM", "RDM", "LDM", "CM", "RCM", "LCM", "RM", "LM", "CAM", "RAM", "LAM", "RW", "LW", "RF", "LF", "ST", "CF"]
+                },
+                "rating": {"type": "number", "minimum": 0, "maximum": 100},
+                "secondary_position": {"type": "string"},
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "pace": {"type": "number"},
+                    "passing": {"type": "number"},
+                    "dribbling": {"type": "number"},
+                    "defending": {"type": "number"},
+                    "physical": {"type": "number"},
+                    "aerial": {"type": "number"}
+                  }
+                },
+                "fitness": {"type": "number", "minimum": 0, "maximum": 100}
+              }
+            }
+          },
+          "playing_style": {
+            "type": "string",
+            "enum": ["possession", "counter-attack", "direct", "balanced"]
+          },
+          "opponent_style": {
+            "type": "object",
+            "properties": {
+              "formation": {"type": "string"},
+              "playing_style": {"type": "string"},
+              "strengths": {"type": "array", "items": {"type": "string"}},
+              "weaknesses": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["formations", "recommendation"],
+        "properties": {
+          "formations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "formation": {"type": "string"},
+                "score": {"type": "number"},
+                "positioning": {"type": "object"},
+                "strengths": {"type": "array", "items": {"type": "string"}},
+                "weaknesses": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          },
+          "recommendation": {
+            "type": "object",
+            "properties": {
+              "formation": {"type": "string"},
+              "reasoning": {"type": "string"},
+              "tactical_notes": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      },
+      "execution_handler": "formation_analyzer"
+    },
+    {
+      "name": "design_pressing_structure",
+      "description": "Design pressing triggers and defensive block organization",
+      "input_schema": {
+        "type": "object",
+        "required": ["formation", "pressing_style"],
+        "properties": {
+          "formation": {
+            "type": "string",
+            "enum": ["4-3-3", "4-2-3-1", "4-4-2", "3-5-2", "5-3-2", "3-4-3"]
+          },
+          "pressing_style": {
+            "type": "string",
+            "enum": ["high-press", "mid-block", "low-block", "mixed"]
+          },
+          "opponent_buildup": {
+            "type": "string",
+            "enum": ["short-passing", "long-balls", "mix"]
+          },
+          "game_state": {
+            "type": "object",
+            "properties": {
+              "score": {"type": "string"},
+              "time": {"type": "integer"},
+              "target": {"type": "string"}
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["pressing_plan", "defensive_organization"],
+        "properties": {
+          "pressing_plan": {
+            "type": "object",
+            "properties": {
+              "zones": {"type": "array"},
+              "triggers": {"type": "array"},
+              "coordination": {"type": "string"}
+            }
+          },
+          "defensive_organization": {
+            "type": "object",
+            "properties": {
+              "block_shape": {"type": "string"},
+              "positioning": {"type": "object"},
+              "transition_plan": {"type": "string"}
+            }
+          }
+        }
+      },
+      "execution_handler": "pressing_specialist"
+    },
+    {
+      "name": "calculate_xg",
+      "description": "Calculate expected goals for shots or match analysis",
+      "input_schema": {
+        "type": "object",
+        "required": ["query_type"],
+        "properties": {
+          "query_type": {
+            "type": "string",
+            "enum": ["single-shot", "match-analysis"]
+          },
+          "shot_data": {
+            "type": "object",
+            "properties": {
+              "location": {"type": "object"},
+              "shot_type": {"type": "string"},
+              "assist_type": {"type": "string"},
+              "defenders": {"type": "integer"},
+              "outcome": {"type": "string"}
+            }
+          },
+          "match_shots": {
+            "type": "array",
+            "items": {"type": "object"}
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "xg_value": {"type": "number"},
+          "breakdown": {"type": "object"},
+          "match_analysis": {
+            "type": "object",
+            "properties": {
+              "home_xg": {"type": "number"},
+              "away_xg": {"type": "number"},
+              "timeline": {"type": "array"},
+              "performance_summary": {"type": "string"}
+            }
+          }
+        }
+      },
+      "execution_handler": "analytics_engine"
+    },
+    {
+      "name": "analyze_opponent",
+      "description": "Analyze opponent tactical tendencies and weaknesses",
+      "input_schema": {
+        "type": "object",
+        "required": ["team_name", "matches"],
+        "properties": {
+          "team_name": {"type": "string"},
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "opponent": {"type": "string"},
+                "formation": {"type": "string"},
+                "playing_style": {"type": "string"},
+                "xg_for": {"type": "number"},
+                "xg_against": {"type": "number"},
+                "goals_for": {"type": "integer"},
+                "goals_against": {"type": "integer"},
+                "ppda": {"type": "number"},
+                "high_turnovers": {"type": "integer"},
+                "result": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "object",
+            "properties": {
+              "team_name": {"type": "string"},
+              "recent_form": {"type": "array"},
+              "averages": {"type": "object"},
+              "tactical_tendencies": {"type": "object"},
+              "strengths": {"type": "array"},
+              "weaknesses": {"type": "array"},
+              "exploitation_opportunities": {"type": "array"},
+              "recommended_approach": {"type": "string"}
+            }
+          }
+        }
+      },
+      "execution_handler": "opponent_analyzer"
+    },
+    {
+      "name": "design_training_session",
+      "description": "Design training session or periodization plan",
+      "input_schema": {
+        "type": "object",
+        "required": ["session_type"],
+        "properties": {
+          "session_type": {
+            "type": "string",
+            "enum": ["tactical", "technical", "conditioning", "recovery", "match-prep", "set-piece", "periodization"]
+          },
+          "duration": {"type": "integer"},
+          "intensity": {"type": "string"},
+          "focus_topic": {"type": "string"},
+          "formation": {"type": "string"},
+          "player_availability": {"type": "object"},
+          "periodization_request": {"type": "object"}
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "session_plan": {
+            "type": "object",
+            "properties": {
+              "warm_up": {"type": "object"},
+              "phases": {"type": "array"},
+              "cool_down": {"type": "object"},
+              "load_calculation": {"type": "number"}
+            }
+          },
+          "periodization_plan": {
+            "type": "object",
+            "properties": {
+              "weeks": {"type": "array"},
+              "key_dates": {"type": "array"},
+              "progression": {"type": "string"}
+            }
+          }
+        }
+      },
+      "execution_handler": "training_architect"
+    },
+    {
+      "name": "design_set_piece",
+      "description": "Design set-piece strategy for corners, free kicks, etc.",
+      "input_schema": {
+        "type": "object",
+        "required": ["set_piece_type", "attacking_or_defending"],
+        "properties": {
+          "set_piece_type": {
+            "type": "string",
+            "enum": ["corner", "free-kick", "throw-in", "penalty"]
+          },
+          "attacking_or_defending": {
+            "type": "string",
+            "enum": ["attacking", "defending"]
+          },
+          "field_position": {"type": "object"},
+          "personnel": {"type": "object"},
+          "opponent_weakness": {"type": "object"},
+          "game_state": {"type": "object"}
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "strategy": {
+            "type": "object",
+            "properties": {
+              "setup": {"type": "object"},
+              "movements": {"type": "array"},
+              "delivery_zones": {"type": "array"},
+              "coaching_points": {"type": "array"}
+            }
+          }
+        }
+      },
+      "execution_handler": "set_piece_coordinator"
+    }
+  ]
+}

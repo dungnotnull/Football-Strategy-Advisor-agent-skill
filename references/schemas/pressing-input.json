@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pressing Structure Input Schema",
+  "description": "Input schema for pressing and defensive block design",
+  "type": "object",
+  "required": ["formation", "pressing_style"],
+  "properties": {
+    "formation": {
+      "type": "string",
+      "enum": ["4-3-3", "4-2-3-1", "4-4-2", "3-5-2", "5-3-2", "3-4-3", "4-1-4-1", "4-3-2-1"],
+      "description": "Tactical formation for defensive organization"
+    },
+    "pressing_style": {
+      "type": "string",
+      "enum": ["high-press", "mid-block", "low-block", "mixed"],
+      "description": "Primary pressing approach"
+    },
+    "opponent_buildup": {
+      "type": "string",
+      "enum": ["short-passing", "long-balls", "mix", "unknown"],
+      "description": "How opponent builds from the back"
+    },
+    "game_state": {
+      "type": "object",
+      "description": "Current match state",
+      "properties": {
+        "score": {
+          "type": "string",
+          "pattern": "^[0-9]+-[0-9]+$",
+          "description": "Current score (our goals - their goals)"
+        },
+        "time": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 90,
+          "description": "Current match time in minutes"
+        },
+        "target": {
+          "type": "string",
+          "enum": ["win", "draw", "hold-lead", "reduce-deficit"],
+          "description": "Current tactical objective"
+        }
+      }
+    },
+    "player_capabilities": {
+      "type": "object",
+      "description": "Player work rate and pressing ability",
+      "properties": {
+        "high_work_rate_players": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Names of players with high work rate"
+        },
+        "limited_work_rate_players": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Names of players with limited work rate"
+        },
+        "weak_defenders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Defenders vulnerable in transition"
+        }
+      }
+    },
+    "fatigue_considerations": {
+      "type": "object",
+      "description": "Current fatigue levels",
+      "properties": {
+        "fatigue_level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Overall team fatigue"
+        },
+        "fatigue_positions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["forwards", "midfielders", "defenders", "fullbacks"]
+          },
+          "description": "Positions with high fatigue"
+        }
+      }
+    }
+  }
+}
